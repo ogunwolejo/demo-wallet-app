@@ -1,0 +1,12 @@
+{
+    "env": "development",
+    "port": "5000",
+    "secretKey": "MmxRPB",
+    "db": {
+        "host": "mysql-90632-0.cloudclusters.net",
+        "port": "10040",
+        "username": "admin",
+        "password": "RZWuvamB",
+        "database": "demo"
+    }
+}
