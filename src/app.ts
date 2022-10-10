@@ -7,10 +7,12 @@ import IndexRouter from './router/index';
 import config from 'config';
 import errorMiddleware from './middleware/error.middleware';
 import db from './database';
+import { FlutterWave } from './utils/flutterwave';
 
 class App {
     private app: Application;
     private indexRouter = new IndexRouter();
+    private fW = new FlutterWave();
 
     constructor() {
         this.app = express();

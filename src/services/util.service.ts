@@ -16,17 +16,11 @@ class UtilsService {
 
     public generateToken(payload: TokenPayload) {
         const secretKey: string = config.get('secretKey');
-        const token = jwt.sign({ id: payload.userId, name: payload.userName }, `${secretKey}`, { algorithm: 'HS256', expiresIn: 2 * 3600  }); // expires in 2hours
+        const token = jwt.sign({ id: payload.userId, name: payload.userName, email:payload.userEmail }, `${secretKey}`, { algorithm: 'HS256', expiresIn: 2 * 3600  }); // expires in 2hours
         return token;
     }
 
-    public generateRefreshToken(payload: TokenPayload) {
-        const secretKey: string = config.get('secretKey');
-        const token = jwt.sign({ id: payload.userId, name: payload.userName }, `${secretKey}`, { algorithm: 'HS256', expiresIn: 24 * 3600 * 3  }); // expires in 3 days
-        return token;
-    }
-
-
+ 
     public decodeToken(token: string) {
         const secretKey: string = config.get('secretKey');
         return jwt.decode(token, { complete: true })
