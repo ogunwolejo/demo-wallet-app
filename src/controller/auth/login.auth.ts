@@ -17,7 +17,6 @@ export const loginUser = async (req: Request, res: Response, next: NextFunction)
         }).select('id', 'fullName', 'email', 'password');
 
         if (isUser) {
-            console.log(isUser);
             const foundUser: IUser = isUser[0];
             // confirm password
             const isPasswordCorrect: boolean = uS.compareBcrypt(password, foundUser.password);
@@ -26,10 +25,20 @@ export const loginUser = async (req: Request, res: Response, next: NextFunction)
                 return next(new HttpException(404, 'Incorrect password'));
             }
 
+            const userWalletDetails = await db.connection('Wallets').where({
+                wallet_user: isUser[0].id
+            });
+
+            if (!userWalletDetails) {
+                return next(new HttpException(400, 'User does not have a virtual wallet, please create one '));
+            }
+
             const payload: TokenPayload = {
                 userEmail: foundUser.email,
                 userId: foundUser.id,
-                userName: foundUser.fullName
+                userName: foundUser.fullName,
+                userVirtualFlwAccountNumber: userWalletDetails[0].flutterwave_account_number,
+                userVirtualFlwBankName: userWalletDetails[0].flutterwave_back_name
             }
 
             const token = uS.generateToken(payload);
@@ -45,14 +54,3 @@ export const loginUser = async (req: Request, res: Response, next: NextFunction)
     }
 }
 
-/**
- * {
-    id: '5b5bf179-6543-4f13-8dc8-6c5f98586645',
-    fullName: 'Ogunwole Joshua ',
-    age: 44,
-    contact: '09031846448',
-    email: 'ogunwolejo@gmail.com',
-    password: '$2b$10$/E7M82tmKkhFMk4ImoTXROCgvfiKLZ32ndYqjktIiYPKu09XV2jNq',
-    created_at: 2022-10-08T11:26:59.411Z
-  }
- */

@@ -48,15 +48,14 @@ export const registerNewUser = async (req: Request, res: Response, next: NextFun
 
             //create a flutterwave virtual wallet
             const createVirtualAccount  = await flw.createVirtualWallets({ email: registeredUser[0].email, is_permanent: true, bvn: registeredUser[0].bvn, tx_ref: registeredUser[0].tax_ref });
-            
+            //console.log(createVirtualAccount);
             // get the virtual wallet account number
             //const getVirtualAccountNumber = await flw.getVirtualAccountNumber(createVirtualAccount.data?.) 
 
             if (!createVirtualAccount) {
                 return next(new HttpException(400, 'Could not create a flutter wallet'));
             }
-            //create the user's wallet
-            console.log(createVirtualAccount);
+            
             const walletId: string = uuid4();
             const createUserWallet = await db.connection('Wallet').insert({
                 id: walletId,
