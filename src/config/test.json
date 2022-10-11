@@ -1,0 +1,17 @@
+{
+  "env": "win-node-env",
+  "port": "5000",
+  "secretKey": "MmxRPB",
+  "db": {
+    "host": "mysql-90632-0.cloudclusters.net",
+    "port": "10040",
+    "username": "admin",
+    "password": "RZWuvamB",
+    "database": "demo"
+  },
+  "flutterwaveKeys": {
+    "publicApiKey": "FLWPUBK_TEST-d8ae384688cbeca79290841cfa1d21c9-X",
+    "secretApiKey": "FLWSECK_TEST-8b6c17085380acea8a331f727145f7c0-X",
+    "encryptionKey": "FLWSECK_TESTbca186bdf298"
+  }
+}

@@ -10,7 +10,7 @@ import db from './database';
 import { FlutterWave } from './utils/flutterwave';
 
 class App {
-    private app: Application;
+    public app: Application;
     private indexRouter = new IndexRouter();
     private fW = new FlutterWave();
 

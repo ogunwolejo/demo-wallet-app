@@ -2,7 +2,7 @@ import { Knex, knex } from 'knex';
 import config from 'config';
 
 class DataBase {
-    private dbConfig: any = config.get('db');
+    public dbConfig: any = config.get('db');
     public connection: any;
 
     constructor() {
@@ -20,7 +20,7 @@ class DataBase {
 
         this.connection
             .raw('SELECT VERSION()')
-            .then(() => console.log('connected to db'));
+            .then((data:any) => data).catch((e:any) => e);
         
         this.connection.schema.hasTable('Users', 'Wallet').then((exist: any) => {
             if (!exist) {
@@ -39,7 +39,7 @@ class DataBase {
                 });
                 table.string('fullName', 200);
                 table.integer('age');
-                table.string('contact', 20, {});
+                table.string('contact', 200, {});
                 table.string('email', 200), //.unique();
                     table.string('bvn', 200);
                 table.string('tax_ref', 200);
