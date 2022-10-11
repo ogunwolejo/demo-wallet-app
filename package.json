@@ -10,6 +10,9 @@
     "build": "tsc && npm run copy-files",
     "copy-files": "copyfiles -u 1 src/config/*.json dist/"
   },
+  "engines": {
+    "node": "16.16.0"
+  },
   "author": "Joshua Ifeoluwapo Ogunwole",
   "license": "ISC",
   "dependencies": {
