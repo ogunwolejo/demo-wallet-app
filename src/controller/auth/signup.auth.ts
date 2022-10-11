@@ -4,12 +4,20 @@ import { v4 as uuid4 } from 'uuid';
 import UtilsService from '../../services/util.service';
 import { HttpException } from './../../utils/exception';
 import { FlutterWave } from '../../utils/flutterwave';
+import ValidateService from '../../services/validation.service';
 
 export const registerNewUser = async (req: Request, res: Response, next: NextFunction) => {
     const { body: { fullName, age, contact, email, password, bvn, tax_ref } } = req;
     const db = new DataBase();
     const uS = new UtilsService();
     const flw = new FlutterWave();
+    const vS = new ValidateService()
+
+    const v = vS.validateSchema(fullName, age, contact, email, password, bvn, tax_ref);
+    if (v.error) {
+        console.log(v.error);
+        return res.status(400).json({ message: v['error'] });
+    }
 
     try {
         const userDetails = {
@@ -48,9 +56,7 @@ export const registerNewUser = async (req: Request, res: Response, next: NextFun
 
             //create a flutterwave virtual wallet
             const createVirtualAccount  = await flw.createVirtualWallets({ email: registeredUser[0].email, is_permanent: true, bvn: registeredUser[0].bvn, tx_ref: registeredUser[0].tax_ref });
-            //console.log(createVirtualAccount);
-            // get the virtual wallet account number
-            //const getVirtualAccountNumber = await flw.getVirtualAccountNumber(createVirtualAccount.data?.) 
+            
 
             if (!createVirtualAccount) {
                 return next(new HttpException(400, 'Could not create a flutter wallet'));

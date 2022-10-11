@@ -6,8 +6,10 @@ import {
 } from '../../interface/flutterwave.interface';
 import { HttpException } from '../../utils/exception';
 import { FlutterWave } from '../../utils/flutterwave';
+import ValidateService from '../../services/validation.service';
 
 const flw = new FlutterWave();
+const vS = new ValidateService();
 
 export const getAllBanks = async (
   req: Request,
@@ -39,6 +41,12 @@ export const withDrawalFundsToABank = async (
   const {
     body: { account_bank_code, account_number, amount, narration },
   } = req;
+  
+  const v = vS.withDrawFundsValidationSchema(account_bank_code, account_number, amount, narration);
+  if (v.error) {
+    return res.status(400).json({ message: v['error'] });
+  }
+
   try {
     const payload: withDrawalPayload = {
       account_bank: account_bank_code,
@@ -75,6 +83,12 @@ export const fundMyWallet = async (
   const {
     body: { wallet_number, amount, narration },
   } = req;
+
+  const v = vS.fundWalletValidationSchema(wallet_number, amount, narration);
+  if (v.error) {
+    return res.status(400).json({ message: v['error'] });
+  }
+
   try {
     const payload: fundAccountPayload = {
       account_bank: 'flutterwave',
@@ -107,7 +121,12 @@ export const walletToWalletTransfer = async (
   res: Response,
   next: NextFunction
 ) => {
-    const { body: { merchant_id , amount, narration} } = req;
+  const { body: { merchant_id, amount, narration } } = req;
+  const v = vS.walletToWalletValidationSchema(merchant_id, amount, narration);
+  if (v.error) {
+    return res.status(400).json({ message: v['error'] });
+  }
+
     try {
         const payload: walletToWalletTransferPayload = {
             account_bank: "flutterwave",

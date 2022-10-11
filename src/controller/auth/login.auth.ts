@@ -4,12 +4,21 @@ import UtilsService from '../../services/util.service';
 import { HttpException } from '../../utils/exception';
 import { IUser } from './../../interface/user.interface';
 import { TokenPayload } from '../../interface/utilservice.interfcae';
+import ValidateService from '../../services/validation.service';
 
 
 export const loginUser = async (req: Request, res: Response, next: NextFunction) => {
+
     const { body: { email, password } } = req;
     const db = new DataBase();
     const uS = new UtilsService();
+    const vS = new ValidateService();
+
+    const v = vS.loginValidationSchema(email, password);
+    if (v.error) {
+        console.log(v.error);
+        return res.status(400).json({ message: v['error'] });
+    }
 
     try {
         const isUser = await db.connection('Users').where({
@@ -25,7 +34,7 @@ export const loginUser = async (req: Request, res: Response, next: NextFunction)
                 return next(new HttpException(404, 'Incorrect password'));
             }
 
-            const userWalletDetails = await db.connection('Wallets').where({
+            const userWalletDetails = await db.connection('Wallet').where({
                 wallet_user: isUser[0].id
             });
 

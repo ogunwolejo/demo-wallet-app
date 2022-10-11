@@ -21,7 +21,12 @@ class DataBase {
         this.connection
             .raw('SELECT VERSION()')
             .then(() => console.log('connected to db'));
-        //this.createAppTable();
+        
+        this.connection.schema.hasTable('Users', 'Wallet').then((exist: any) => {
+            if (!exist) {
+                this.createAppTable();               
+            }
+        })
     }
 
     private async createAppTable() {
