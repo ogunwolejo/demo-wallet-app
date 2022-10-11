@@ -3,10 +3,10 @@
   "port": "5000",
   "secretKey": "MmxRPB",
   "db": {
-    "host": "mysql-90632-0.cloudclusters.net",
-    "port": "10040",
+    "host": "mysql-90984-0.cloudclusters.net",
+    "port": "19943",
     "username": "admin",
-    "password": "RZWuvamB",
+    "password": "ucvDVQH6",
     "database": "demo"
   },
   "flutterwaveKeys": {

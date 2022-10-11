@@ -40,7 +40,7 @@ class DataBase {
                 table.string('fullName', 200);
                 table.integer('age');
                 table.string('contact', 200, {});
-                table.string('email', 200), //.unique();
+                table.string('email', 200).unique();
                     table.string('bvn', 200);
                 table.string('tax_ref', 200);
                 table.string('password', 200);
